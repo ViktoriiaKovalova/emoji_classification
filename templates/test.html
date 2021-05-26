@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Upload your image of emoji to test{% endblock %}</h1>
+    <h2>List of classes:</h2>
+{% for class in classes %}
+    <img src="static/data/{{ class }}/img.png" width="50px">
+{% endfor %}
+<form method="post" enctype="multipart/form-data">
+    <div class="image">
+        <label for="image">Choose your image:</label>
+        <input name="image" type="file"
+               accept="image/*"
+               value="{{ request.files['image']}}"></input>
+    </div>
+    <button style="margin-top:1em" type="submit" class="btn btn-primary">Predict class</button>
+</form>
+
+    <div class="container">
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+    {% for message in messages %}
+        <h2>{{message}}</h2>
+    {% endfor %}
+    {% for class, value in probabilities.items() %}
+    <li><img src="static/data/{{ class }}/img.png" width="50px">: {{ value }}%</li>
+    {% endfor %}
+    {% if pred %}
+    Your emoji is most probably <img src="static/data/{{ pred }}/img.png" width="50px">!
+    {% endif %}
+{% endblock %}
