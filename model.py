@@ -36,7 +36,7 @@ class Model:
             def forward(self, x):
                 x = x.view(-1, image_size * 3)
                 x = torch.sigmoid(self.fc1(x))
-                x = x.drop1(x)
+                x = self.drop1(x)
                 x = F.softmax(self.fc2(x), dim=1)
                 return x
         return MyModel()
